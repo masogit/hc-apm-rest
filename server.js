@@ -9,15 +9,20 @@ const base = process.env.APM_ROOT || "/apm";
 var server = express();
 var app = express(); 
 var rest = express();
+
+
+server.use(express.static(path.join(__dirname, '/dist')));
 server.use(base, app);
+server.use('*', function (req, res, next) {
+    res.sendFile(path.join(__dirname + '/dist/index.html'))
+    // next();
+});
 
-app.use(express.static(path.join(__dirname, '/dist')));
+
 var proxy = httpProxy.createProxyServer({secure: false});
-
 proxy.on('error', function(e) {
   console.log(e);
 });
-
 proxy.on('proxyReq', function(proxyReq, req, res, options) {
   console.log('proxyReq');
   console.log(options);
@@ -69,12 +74,12 @@ rest.use('/site_info', ssl);
 //     // res.json(sites);
 // });
 
-app.use('*', (req, res, next) => {
-    next();
-});
+// app.use('*', (req, res, next) => {
+//     next();
+// });
 
 app.use('*', function (req, res, next) {
-    express.static(__dirname + '/dist/index.html')
+    res.sendFile(path.join(__dirname + '/dist/index.html'))
     // next();
 });
 
