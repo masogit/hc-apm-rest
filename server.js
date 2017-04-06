@@ -83,6 +83,6 @@ app.use('*', function (req, res, next) {
     // next();
 });
 
-server.listen(9000, function () {
-  console.log('Example app listening on port 9000!')
+server.listen(80, function () {
+  console.log('Example app listening on port 80!')
 });
